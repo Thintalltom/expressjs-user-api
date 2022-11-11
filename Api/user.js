@@ -10,9 +10,29 @@ router.get('/',(req, res) => {
 
 //this is used to get a particular information of  a user based on the id 
 router.get('/:id', (req, res) => {
-    const found = user.some(user =>  user.id === parseInt(req.param.id))
+    const found = user.some(user =>  user.id === parseInt(req.params.id))
+// funtion is used to find user based on the id 
+    if(found) {
+       res.json(user.filter((user) => user.id  === parseInt(req.params.id)))
+    } else 
+    {
+        res.sendStatus(400)
+    }
+});
+
+// used to add a new user
+router.post('/', (req, res) => {
+    const newUser = {
+        id: uuid.v4(),
+        name: req.body.name,
+        email: req.body.email
+    }
+    if(!newUser.name || !newUser.email) {
+        return res.sendStatus(400)
+    } 
+    user.push(newUser)
+    res.json(user)
 })
 
-router.post
-// make sure you export the router
+// always export the module 
 module.exports = router
