@@ -34,5 +34,38 @@ router.post('/', (req, res) => {
     res.json(user)
 })
 
+// in order to update the record we use the http put method 
+router.put('/:id', (req, res) => {
+    const found = user.some(user =>  user.id === parseInt(req.params.id))
+
+    if(found) {
+        const updateUser = req.body;
+        user.forEach(user => {
+            if(user.id === parseInt(req.params.id)){
+                user.name = updateUser.name ? updateUser.name: user.name
+                user.email = updateUser.email ? updateUser.email: user.email
+                res.json({
+                    message: 'user updated',
+                    user
+                })
+            }
+        })
+    }
+})
+// to delete user 
+router.delete('/:id', (req, res) => {
+    const found = user.some(user =>  user.id === parseInt(req.params.id))
+    if(found){
+        user = user.filter(user => user.id !==  parseInt(req.params.id))
+        res.json({
+            message: 'user deleted',
+            user
+        })
+    }else {
+        res.sendStatus(400)
+    }
+    
+})
+
 // always export the module 
 module.exports = router
